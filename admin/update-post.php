@@ -7,7 +7,7 @@
     </div>
     <div class="col-md-offset-3 col-md-6">
         <!-- Form for show edit-->
-        <form action="" method="POST" enctype="multipart/form-data" autocomplete="off">
+        <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST" enctype="multipart/form-data" autocomplete="off">
             <div class="form-group">
                 <input type="hidden" name="post_id"  class="form-control" value="1" placeholder="">
             </div>

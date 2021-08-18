@@ -2,6 +2,17 @@
   if($_SESSION['user_role'] == '0') {
     header("Location:{$hostname}/admin");
   }
+
+  if(isset($_POST['save'])){
+    include 'config.php';
+
+    $category = $_POST['cat'];
+
+    $sql = "INSERT INTO category(category_name) VALUES ('{$category}')";
+    $result = mysqli_query($conn, $sql) or die("Query Failed.");
+    header("Location: {$hostname}/admin/category.php");
+
+  }
 ?>
   <div id="admin-content">
       <div class="container">
@@ -11,7 +22,7 @@
               </div>
               <div class="col-md-offset-3 col-md-6">
                   <!-- Form Start -->
-                  <form action="" method="POST" autocomplete="off">
+                  <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST" autocomplete="off">
                       <div class="form-group">
                           <label>Category Name</label>
                           <input type="text" name="cat" class="form-control" placeholder="Category Name" required>
