@@ -20,18 +20,22 @@
                   $limit = 3;
                   $offset = ($page - 1) * $limit;
 
-                  if(($_SESSION['user_role']) == '1') {
-                    $sql = "SELECT * FROM post
-                            LEFT JOIN category ON category_id = post.category
-                            LEFT JOIN user on user_id = post.author
-                            ORDER BY post_id DESC LIMIT {$offset}, {$limit}";
-                  } elseif (($_SESSION['user_role']) == '0') {
-                    $sql = "SELECT * FROM post
-                            LEFT JOIN category ON category_id = post.category
-                            LEFT JOIN user on user_id = post.author
-                            WHERE post.author = {$_SESSION['user_id']}
-                            ORDER BY post_id DESC LIMIT {$offset}, {$limit}";
-                  }
+                if($_SESSION["user_role"] == '1'){
+                  /* select query of post table for admin user */
+                  $sql = "SELECT post.post_id, post.title, post.description,post.post_date,
+                  category.category_name,user.first_name,post.category FROM post
+                  LEFT JOIN category ON post.category = category.category_id
+                  LEFT JOIN user ON post.author = user.user_id
+                  ORDER BY post.post_id DESC LIMIT {$offset},{$limit}";
+                }elseif($_SESSION["user_role"] == '0'){
+                  /* select query of post table for normal user */
+                  $sql = "SELECT post.post_id, post.title, post.description,post.post_date,
+                  category.category_name,user.first_name,post.category FROM post
+                  LEFT JOIN category ON post.category = category.category_id
+                  LEFT JOIN user ON post.author = user.user_id
+                  WHERE post.author = {$_SESSION['user_id']}
+                  ORDER BY post.post_id DESC LIMIT {$offset},{$limit}";
+                }
 
 
                   $result = mysqli_query($conn, $sql) or die("Query Failed.");
@@ -55,8 +59,8 @@
                               <td><?php echo $row['category_name']; ?></td>
                               <td><?php echo $row['post_date']; ?></td>
                               <td><?php echo $row['first_name']; ?></td>
-                              <td class='edit'><a href='update-post.php'><i class='fa fa-edit'></i></a></td>
-                              <td class='delete'><a href='delete-post.php'><i class='fa fa-trash-o'></i></a></td>
+                              <td class='edit'><a href='update-post.php?id=<?php echo $row['post_id']; ?>'><i class='fa fa-edit'></i></a></td>
+                              <td class='delete'><a href='delete-post.php?id=<?php echo $row['post_id']; ?>&catid=<?php echo $row['category']; ?>'><i class='fa fa-trash-o'></i></a></td>
                           </tr>
                         <?php } ?>
                       </tbody>
