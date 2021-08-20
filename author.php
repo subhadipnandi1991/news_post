@@ -6,6 +6,7 @@
               <!-- post-container -->
               <div class="post-container">
                 <?php
+                  include 'config.php';
 
                   if (isset($_GET['aid'])) {
                     $auth_id = $_GET['aid'];
@@ -20,7 +21,6 @@
 
                 <h2 class="page-heading"><?php echo $row1['first_name'] ?></h2>
                 <?php
-                  include 'config.php';
 
 
                   if(isset($_GET['page'])) {
